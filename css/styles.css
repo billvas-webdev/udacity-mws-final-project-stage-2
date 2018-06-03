@@ -2,7 +2,7 @@
 /* CSS Document */
 
 body,td,th,p{
-	font-family: "Raleway",Arial, Helvetica, sans-serif;
+	font-family: Arial, Helvetica, sans-serif;
 	font-size: 1.05rem;
 	color: #333;
 	line-height: 1.5;
@@ -13,7 +13,7 @@ body {
 	position:relative;
 }
 ul, li {
-	font-family: "Raleway",Arial, Helvetica, sans-serif;
+	font-family: Arial, Helvetica, sans-serif;
 	font-size: 1rem;
 	color: #333;
 }
@@ -30,7 +30,7 @@ a img{
 	border: none 0px #fff;
 }
 h1, h2, h3, h4, h5, h6 {
-  font-family: "Raleway",Arial, Helvetica, sans-serif;
+  font-family: Arial, Helvetica, sans-serif;
   margin: 0 0 20px;
 }
 article, aside, canvas, details, figcaption, figure, footer, header, hgroup, menu, nav, section {
@@ -130,7 +130,7 @@ nav h1 a {
 .filter-options select {
   background-color: white;
   border: 1px solid #fff;
-  font-family: "Raleway",Arial, Helvetica, sans-serif;
+  font-family: Arial, Helvetica, sans-serif;
   font-size: 1.1rem;
   height: 35px;
   letter-spacing: 0;
@@ -154,7 +154,7 @@ label {
   display: inline-block;
   background-color: #fff;
   border: 1px solid #ccc;
-  font-family: "Raleway",Arial, Helvetica, sans-serif;
+  font-family: Arial, Helvetica, sans-serif;
   margin: 15px;
   box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
   border-radius: 1rem 0;
@@ -175,7 +175,7 @@ label {
 }
 #restaurants-list li h1 {
   color: #f18200;
-  font-family: "Raleway",Arial, Helvetica, sans-serif;
+  font-family: Arial, Helvetica, sans-serif;
   font-size: 1.75rem;
   font-weight: 300;
   letter-spacing: 0;
@@ -233,7 +233,7 @@ label {
 }
 #restaurant-name {
   color: #f18200;
-  font-family: "Raleway",Arial, Helvetica, sans-serif;
+  font-family: Arial, Helvetica, sans-serif;
   font-size: 1.65rem;
   font-weight: 300;
   letter-spacing: 0;
@@ -351,3 +351,94 @@ label {
 #restaurant-hours td {
   color: #333;
 }
+/*
+RESPONSIVE SETTINGS
+*/
+/* ====================== Media Sizes for Desktops ====================== */
+@media only screen and (max-width: 1023px) {
+    .inside #map-container {
+      top: 15px;
+      height: 50vh;
+      width: 100%;
+      position: relative;
+    }
+    #restaurant-container, #reviews-container {
+      width: 100%;
+    }
+    .inside #footer {
+      width: 100%;
+    }
+    .filter-options {
+      padding: 0 10px;
+    }
+    options select {
+      display: inline-block;
+      margin: 8px auto;
+      text-align: center;
+    }
+    label {
+      text-align: center;
+      display: block;
+      font-size: 1.15rem;
+      font-weight: 700;
+      position: relative;
+    }
+    .filter-options h2, .filter-options select {
+        display: block;
+        margin: 10px auto;
+        text-align: center;
+    }
+    .filter-options h2 {
+      padding-top: 10px;
+      font-size: 1.4rem;
+    }
+    .rating {
+        width: 26%;
+        max-width: auto;
+    }
+    #footer {
+      padding-top: 1rem;
+    }
+    }
+    /* ====================== Media Sizes for Tablets --Landscape Mode-- ====================== */
+    @media only screen and (max-width: 620px) {
+    .filter-options {
+      padding: 0 10px;
+    }
+    options select {
+      display: inline-block;
+      margin: 8px auto;
+      text-align: center;
+    }
+    .filter-options h2, .filter-options select {
+        display: block;
+        margin: 10px auto;
+        text-align: center;
+    }
+    .filter-options h2 {
+      padding-top: 10px;
+      font-size: 1.4rem;
+    }
+    .rating {
+        width: 33%;
+        max-width: auto;
+    }
+    }
+
+    /* ====================== Media Sizes Phones --Portrait Mode-- ====================== */
+    @media only screen and (max-width: 435px) {
+    nav h1 a {
+      font-size: 1.3rem;
+      font-weight: 200;
+      letter-spacing: .2rem;
+    }
+
+    .rating {
+      width: 45%;
+    }
+    #footer {
+     padding: 1rem 0;
+     font-size: .65rem;
+    }
+    }
+
