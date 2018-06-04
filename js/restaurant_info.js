@@ -140,60 +140,42 @@ fillReviewsHTML = (reviews = self.restaurant.reviews) => {
  */
 
 createReviewHTML = (review) => {
-  const li = document.createElement('li');
-  /* screener settings */
-  li.setAttribute('tabindex', '13');
-  li.setAttribute('role', 'listitem');
+    const li = document.createElement('li');
+    const reviewHeader = document.createElement('div');
+    reviewHeader.className = 'review-header';
+    li.appendChild(reviewHeader);
 
-  const name = document.createElement('p');
-  name.innerHTML = review.name;
-  name.style.textAlign='left';
-  name.style.width='50%';
-  name.style.order='0';
-  name.style.fontWeight='bold';
-  name.style.fontSize='16px';
-  name.style.color='#932C2A';
+    const name = document.createElement('h4');
+    name.innerHTML = review.name;
+    name.className = 'review-author';
+    name.setAttribute('role', 'header'); //added ARIA role for accessibilty
+    name.setAttribute('tabindex', '0'); //added tabindex for accessibilty
+    reviewHeader.appendChild(name);
 
+    const date = document.createElement('span');
+    date.innerHTML = review.date;
+    date.className = 'review-date';
+    date.setAttribute('tabindex', '0'); //added tabindex for accessibilty
+    reviewHeader.appendChild(date);
 
-  li.appendChild(name);
+    const reviewContent = document.createElement('div');
+    reviewContent.className = 'review-content';
+    li.appendChild(reviewContent);
 
-  const date = document.createElement('p');
-  date.innerHTML = review.date;
-  date.style.textAlign='right';
-  date.style.width='50%';
-  date.style.fontSize='16px';
-  date.style.fontStyle='oblique';
-  date.style.textDecoration='underline';
-  date.style.order='0';
+    const rating = document.createElement('div');
+    rating.innerHTML = `Rating: ${review.rating}`;
+    rating.className = 'rating';
+    rating.setAttribute('tabindex', '0'); //added tabindex for accessibilty
+    reviewContent.appendChild(rating);
 
-  li.appendChild(date);
+    const comments = document.createElement('p');
+    comments.innerHTML = review.comments;
+    comments.setAttribute('tabindex', '0'); //added tabindex for accessibilty
+    reviewContent.appendChild(comments);
 
-  const rating = document.createElement('p');
-  rating.innerHTML = `Rating: ${review.rating}`;
-  /* Rating settings */
-  rating.style.backgroundColor='#333333';
-  rating.style.borderRadius='5px 5px';
-  rating.style.textAlign='center';
-  rating.style.fontWeight='bold';
-  rating.style.fontSize='17px';
-  rating.style.height='25px';
-  rating.style.width='100px';
-  rating.style.color='#FFB52E';
-  rating.style.order='1';
+    return li;
+  }
 
-  li.appendChild(rating);
-
-  const comments = document.createElement('p');
-  comments.innerHTML = review.comments;
-  comments.style.order='2';
-  comments.style.lineHeight='1.6';
-  comments.style.textAlign='justify';
-
-  li.appendChild(comments);
-
-
-  return li;
-};
 
 /**
  * Add restaurant name to the breadcrumb navigation menu
