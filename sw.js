@@ -10,7 +10,6 @@ let allCaches = [
   '/restaurant.html',
   '/js/main.js',
   '/js/restaurant_info.js',
-  '/css/responsive.css',
   '/css/styles.css',
   '/img',
 ];
@@ -78,7 +77,7 @@ self.addEventListener('fetch', function(event) {
 });
 
 
-/* remove the old one */
+/* remove the old service worker */
 self.addEventListener('activate', function(event) {
   let cacheWhitelist = [cacheName];
 

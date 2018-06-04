@@ -18,7 +18,7 @@ ul, li {
 	color: #333;
 }
 a {
-	color: white;
+	color: #000;
 	text-decoration: none;
 }
 a:hover, a:focus {
@@ -40,7 +40,7 @@ article, aside, canvas, details, figcaption, figure, footer, header, hgroup, men
   background-color: #f3f3f3;
 }
 #footer {
-  background-color: #444;
+  background-color: #333;
   color: #aaa;
   font-size: .85rem;
   letter-spacing: 1px;
@@ -120,7 +120,7 @@ nav h1 a {
   align-items: center;
 }
 .filter-options h2 {
-  color: white;
+  color: #000;
   font-size: 1.2rem;
   font-weight: normal;
   line-height: 1;
