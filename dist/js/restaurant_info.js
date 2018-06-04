@@ -1,6 +1,3 @@
-/* eslint max-len: ["error", { "code": 100 }]*/
-/* eslint no-unused-vars: ["error", { "vars": "local" }]*/
-
 let restaurant;
 let map;
 
@@ -73,6 +70,13 @@ fillRestaurantHTML = (restaurant = self.restaurant) => {
 
   const image = document.getElementById('restaurant-img');
   image.className = 'restaurant-img';
+
+  const imgUrlArray = [DBHelper.imageUrlForRestaurant(restaurant, 'small'),
+                       DBHelper.imageUrlForRestaurant(restaurant, 'medium'),
+                       DBHelper.imageUrlForRestaurant(restaurant, 'large')];
+  //image.src = `${imgUrlArray[1]}`;
+  image.srcset = `${imgUrlArray[0]} 620w, ${imgUrlArray[1]} 800w, ${imgUrlArray[2]} 1440w`;
+
   /* unique alt-arialabel */
   image.setAttribute('aria-label', name.innerHTML + ' restaurant');
   image.setAttribute('alt', name.innerHTML + ' restaurant');
@@ -151,13 +155,13 @@ createReviewHTML = review => {
   name.innerHTML = review.name;
   name.className = 'review-author';
   name.setAttribute('role', 'header'); //added ARIA role for accessibilty
-
+  name.setAttribute('tabindex', '0'); //added tabindex for accessibilty
   reviewHeader.appendChild(name);
 
   const date = document.createElement('span');
   date.innerHTML = review.date;
   date.className = 'review-date';
-
+  date.setAttribute('tabindex', '0'); //added tabindex for accessibilty
   reviewHeader.appendChild(date);
 
   const reviewContent = document.createElement('div');
@@ -167,12 +171,12 @@ createReviewHTML = review => {
   const rating = document.createElement('div');
   rating.innerHTML = `Rating: ${review.rating}`;
   rating.className = 'rating';
-
+  rating.setAttribute('tabindex', '0'); //added tabindex for accessibilty
   reviewContent.appendChild(rating);
 
   const comments = document.createElement('p');
   comments.innerHTML = review.comments;
-
+  comments.setAttribute('tabindex', '0'); //added tabindex for accessibilty
   reviewContent.appendChild(comments);
 
   return li;
@@ -210,6 +214,4 @@ getParameterByName = (name, url) => {
   return decodeURIComponent(results[2].replace(/\+/g, ' '));
 };
 
-/*
-Screen Reader SETTINGS for the reviews
-*/
+
