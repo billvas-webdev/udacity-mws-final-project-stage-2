@@ -1,5 +1,4 @@
-/* eslint max-len: ["error", { "code": 100 }]*/
-/* eslint no-unused-vars: ["error", { "vars": "local" }]*/
+
 
 let restaurants;
 let neighborhoods;

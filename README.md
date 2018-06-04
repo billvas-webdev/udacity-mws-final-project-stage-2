@@ -1,4 +1,3 @@
-# UPDATED! with Stage 2!!
 # Mobile Web Specialist Certification Course
 ---
 #### _Three Stage Course Material Project - Restaurant Reviews_
@@ -82,20 +81,15 @@ If you find a bug in the source code or a mistake in the documentation, you can 
 submitting an issue to our [Waffle Dashboard](https://waffle.io/udacity/mwnd-issues). Even better you can submit a Pull Request with a fix :)
 
 
-### SUMMARY
+### How to use the Web App
 
-## Lighthouse ratings
-Performance: 77
-Progressive Web App: 91
-Accessibility: 95
-Best Practices: 75
-
-### warning!
-To test it. Be careful on the caches etc. Clear everything first. Test it ( reload the page ) with the site down. Run the http-server ( Do Not run the gulp for the Audits test ). Now you are ready for the Audits ( Lighthouse tests).
+First, clear all caches. Run the http-server ( python -m SimpleHTTPServer 8000). Now you are ready for the Audits ( Lighthouse tests).
 
 ## Steps to run correctly.
 
 1st Run node server ( check for the sails ).
-2nd Run the http-server -p 8000 ( if you want just run gulp ).
+2nd Run python -m SimpleHTTPServer 8000 .
 
-cert.pem and key.pem are for https.
+cert.pem and key.pem are for redirecting HTTP to HTTPS.
+
+

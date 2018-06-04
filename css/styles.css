@@ -219,7 +219,7 @@ label {
   height: 100%;
   position: fixed;
   right: 0;
-  top: 69px;
+  top: 89px;
   width: 50%;
 }
 .inside #map {
@@ -229,7 +229,7 @@ label {
 }
 .inside #footer {
   /*position: absolute;*/
-  width: 100%;
+  width: 50%;
 }
 #restaurant-name {
   color: #f18200;
