@@ -1,7 +1,3 @@
-/* eslint max-len: ["error", { "code": 100 }]*/
-/* eslint no-unused-vars: ["error", { "vars": "local" }]*/
-
-
 let restaurant;
 let map;
 
@@ -10,13 +6,14 @@ let map;
  */
 window.initMap = () => {
   fetchRestaurantFromURL((error, restaurant) => {
-    if (error) { // Got an error!
+    if (error) {
+      // Got an error!
       console.error(error);
     } else {
       self.map = new google.maps.Map(document.getElementById('map'), {
         zoom: 16,
         center: restaurant.latlng,
-        scrollwheel: false,
+        scrollwheel: false
       });
       document.getElementById('map').setAttribute('role', 'application');
 
@@ -36,13 +33,15 @@ window.initMap = () => {
  * Get current restaurant from page URL.
  */
 
-fetchRestaurantFromURL = (callback) => {
-  if (self.restaurant) { // restaurant already fetched!
+fetchRestaurantFromURL = callback => {
+  if (self.restaurant) {
+    // restaurant already fetched!
     callback(null, self.restaurant);
     return;
   }
   const id = getParameterByName('id');
-  if (!id) { // no id found in URL
+  if (!id) {
+    // no id found in URL
     error = 'No restaurant id in URL';
     callback(error, null);
   } else {
@@ -71,9 +70,16 @@ fillRestaurantHTML = (restaurant = self.restaurant) => {
 
   const image = document.getElementById('restaurant-img');
   image.className = 'restaurant-img';
+
+  const imgUrlArray = [DBHelper.imageUrlForRestaurant(restaurant, 'small'),
+                       DBHelper.imageUrlForRestaurant(restaurant, 'medium'),
+                       DBHelper.imageUrlForRestaurant(restaurant, 'large')];
+  //image.src = `${imgUrlArray[1]}`;
+  image.srcset = `${imgUrlArray[0]} 620w, ${imgUrlArray[1]} 800w, ${imgUrlArray[2]} 1440w`;
+
   /* unique alt-arialabel */
-  image.setAttribute('aria-label', name.innerHTML+' restaurant');
-  image.setAttribute('alt', name.innerHTML+' restaurant');
+  image.setAttribute('aria-label', name.innerHTML + ' restaurant');
+  image.setAttribute('alt', name.innerHTML + ' restaurant');
 
   image.src = DBHelper.imageUrlForRestaurant(restaurant);
 
@@ -99,12 +105,12 @@ fillRestaurantHoursHTML = (operatingHours = self.restaurant.operating_hours) => 
 
     const day = document.createElement('td');
     day.innerHTML = key;
-    day.style.color='#525252';
+    day.style.color = '#525252';
     row.appendChild(day);
 
     const time = document.createElement('td');
     time.innerHTML = operatingHours[key];
-    time.style.color='#525252';
+    time.style.color = '#525252';
 
     row.appendChild(time);
 
@@ -129,7 +135,7 @@ fillReviewsHTML = (reviews = self.restaurant.reviews) => {
     return;
   }
   const ul = document.getElementById('reviews-list');
-  reviews.forEach((review) => {
+  reviews.forEach(review => {
     ul.appendChild(createReviewHTML(review));
   });
   container.appendChild(ul);
@@ -139,58 +145,39 @@ fillReviewsHTML = (reviews = self.restaurant.reviews) => {
  * Create review HTML and add it to the webpage.
  */
 
-createReviewHTML = (review) => {
+createReviewHTML = review => {
   const li = document.createElement('li');
-  /* screener settings */
-  li.setAttribute('tabindex', '13');
-  li.setAttribute('role', 'listitem');
+  const reviewHeader = document.createElement('div');
+  reviewHeader.className = 'review-header';
+  li.appendChild(reviewHeader);
 
-  const name = document.createElement('p');
+  const name = document.createElement('h4');
   name.innerHTML = review.name;
-  name.style.textAlign='left';
-  name.style.width='50%';
-  name.style.order='0';
-  name.style.fontWeight='bold';
-  name.style.fontSize='16px';
-  name.style.color='#932C2A';
+  name.className = 'review-author';
+  name.setAttribute('role', 'header'); //added ARIA role for accessibilty
+  name.setAttribute('tabindex', '0'); //added tabindex for accessibilty
+  reviewHeader.appendChild(name);
 
-
-  li.appendChild(name);
-
-  const date = document.createElement('p');
+  const date = document.createElement('span');
   date.innerHTML = review.date;
-  date.style.textAlign='right';
-  date.style.width='50%';
-  date.style.fontSize='16px';
-  date.style.fontStyle='oblique';
-  date.style.textDecoration='underline';
-  date.style.order='0';
+  date.className = 'review-date';
+  date.setAttribute('tabindex', '0'); //added tabindex for accessibilty
+  reviewHeader.appendChild(date);
 
-  li.appendChild(date);
+  const reviewContent = document.createElement('div');
+  reviewContent.className = 'review-content';
+  li.appendChild(reviewContent);
 
-  const rating = document.createElement('p');
+  const rating = document.createElement('div');
   rating.innerHTML = `Rating: ${review.rating}`;
-  /* Rating settings */
-  rating.style.backgroundColor='#333333';
-  rating.style.borderRadius='5px 5px';
-  rating.style.textAlign='center';
-  rating.style.fontWeight='bold';
-  rating.style.fontSize='17px';
-  rating.style.height='25px';
-  rating.style.width='100px';
-  rating.style.color='#FFB52E';
-  rating.style.order='1';
-
-  li.appendChild(rating);
+  rating.className = 'rating';
+  rating.setAttribute('tabindex', '0'); //added tabindex for accessibilty
+  reviewContent.appendChild(rating);
 
   const comments = document.createElement('p');
   comments.innerHTML = review.comments;
-  comments.style.order='2';
-  comments.style.lineHeight='1.6';
-  comments.style.textAlign='justify';
-
-  li.appendChild(comments);
-
+  comments.setAttribute('tabindex', '0'); //added tabindex for accessibilty
+  reviewContent.appendChild(comments);
 
   return li;
 };
@@ -199,10 +186,11 @@ createReviewHTML = (review) => {
  * Add restaurant name to the breadcrumb navigation menu
  */
 
-fillBreadcrumb = (restaurant=self.restaurant) => {
+fillBreadcrumb = (restaurant = self.restaurant) => {
   const breadcrumb = document.getElementById('breadcrumb');
   const li = document.createElement('li');
   li.innerHTML = restaurant.name;
+  li.setAttribute('aria-current', restaurant.name); //added aria-current for accessibilty
   breadcrumb.appendChild(li);
 };
 
@@ -212,21 +200,16 @@ fillBreadcrumb = (restaurant=self.restaurant) => {
 
 getParameterByName = (name, url) => {
   if (!url) {
-url = window.location.href;
-}
+    url = window.location.href;
+  }
   name = name.replace(/[\[\]]/g, '\\$&');
   const regex = new RegExp(`[?&]${name}(=([^&#]*)|&|#|$)`);
   const results = regex.exec(url);
   if (!results) {
-return null;
-}
+    return null;
+  }
   if (!results[2]) {
-return '';
-}
+    return '';
+  }
   return decodeURIComponent(results[2].replace(/\+/g, ' '));
 };
-
-
-/*
-Screen Reader SETTINGS for the reviews
-*/

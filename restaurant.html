@@ -9,8 +9,13 @@
   <link rel="stylesheet" src="//normalize-css.googlecode.com/svn/trunk/normalize.css" />
   <!-- Main CSS file -->
   <link rel="stylesheet" href="dist/css/styles.css" type="text/css">
-  <!-- responsive css file -->
-  <link rel="stylesheet" type="text/css" href="dist/css/responsive.css">
+
+  <script>
+    // Picture element HTML5 shiv
+    document.createElement("picture");
+  </script>
+  <script src="js/picturefill.min.js" async></script>
+
 
   <title>Restaurant Info</title>
 </head>
@@ -39,16 +44,16 @@
     </section>
     <!-- End map -->
     <!-- Beginning restaurant -->
-    <section id="restaurant-container" role="region" tabindex="5" aria-label="details of the restaurant">
+    <section id="restaurant-container" role="region" tabindex="5" aria-label="restaurant details">
       <h2 id="restaurant-name" role="heading" tabindex="6"></h2>
-      <img id="restaurant-img"role="img" tabindex="7" aria-label="restaurant" alt="restaurant">
+      <img id="restaurant-img" role="img" tabindex="7" aria-label="restaurant" alt="restaurant">
       <p id="restaurant-cuisine" role="heading" tabindex="8"></p>
       <p id="restaurant-address" role="presentation" tabindex="9"></p>
       <table id="restaurant-hours"role="presentation"tabindex="10"></table>
     </section>
     <!-- end restaurant -->
     <!-- Beginning reviews -->
-    <section id="reviews-container" role="region" tabindex="11" aria-label="area with the reviews of the restaurant">
+    <section id="reviews-container" role="region" tabindex="11" aria-label="regional reviews of restaurant">
       <ul id="reviews-list" role="list" tabindex="12" aria-label="reviews"></ul>
     </section>
     <!-- End reviews -->

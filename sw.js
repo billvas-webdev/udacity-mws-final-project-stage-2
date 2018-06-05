@@ -1,94 +1,94 @@
-/* eslint max-len: ["error", { "code": 100 }]*/
+//Service Worker Polyfill for cross browser support
+//importScripts('js/serviceworker-cache-polyfill.js');
 
-let version = '1.08';
-let cacheName = 'restaurant_reviews-' + version;
-
-
-let allCaches = [
-  '/',
-  '/index.html',
-  '/restaurant.html',
-  '/js/main.js',
-  '/js/restaurant_info.js',
-  '/css/responsive.css',
-  '/css/styles.css',
-  '/img',
+//Files to Cache using Service Worker
+const CACHE_NAME = 'restaurant-reviews-cache-v1';
+let filesToCache = [
+    '/',
+    'dist/index.html',
+    'dist/restaurant.html',
+    'dist/js/main.js',
+    'dist/js/restaurant_info.js',
+    'dist/css/styles.css',
+    'dist/img',
+	//'/js/restaurant_info.js',
+	//'/data/restaurants.json',
+    //'/js/picturefill.min.js',
+    //'/js/serviceworker-cache-polyfill.js'
 ];
 
-if ('serviceWorker' in navigator) {
-  navigator.serviceWorker.register('/sw.js', {scope: '/'})
-  .then(function(reg) {
-    // registration worked
-    console.log('Registration succeeded. Scope is ' + reg.scope);
-  }).catch(function(error) {
-    // registration failed
-    console.log('Registration failed with ' + error);
-  });
+// Image Caching Section
+let imagesToCache = generateImagesArray();
+const urlsToCache = filesToCache.concat(imagesToCache);
+
+function generateImagesArray() {
+	const imgPath = '/img/';
+	const imgSuffixes = ['small', 'medium', 'large'];
+	const arr = [];
+        for (var i = 1; i < 11; i++) {
+		for (var j = 0; j < 3; j++) {
+			arr.push(`${imgPath}${i}-${imgSuffixes[j]}.jpg`);
+		}
+	}
+    return arr;
 }
-/* installing SW */
-self.addEventListener('install', function(event) {
-  console.log('[ServiceWorker] Install');
-  event.waitUntil(
-    caches.open(cacheName).then(function(cache) {
-      console.log('[ServiceWorker] Caching');
-      return cache.addAll(allCaches);
-    })
-  );
+
+// INSTALL EVENT
+self.addEventListener('install', function (event) {
+	event.waitUntil(
+		caches.open(CACHE_NAME)
+			.then(function (cache) {
+				console.log('Opened cache');
+				return cache.addAll(urlsToCache);
+			})
+	);
+});
+
+// ACTIVATE EVENT
+self.addEventListener('activate', function (event) {
+	event.waitUntil(caches.keys()
+		.then(cacheNames =>
+			Promise.all(
+				cacheNames
+					.filter(cacheName => cacheName !== CACHE_NAME)
+					.map(cleanCache)
+			)
+		));
 });
 
 
-self.addEventListener('fetch', function(event) {
-  event.respondWith(
-    caches.match(event.request)
-      .then(function(response) {
-        // Cache hit - return response
-        if (response) {
-          return response;
-        }
-
-        // IMPORTANT: Clone the request. A request is a stream and
-        // can only be consumed once. Since we are consuming this
-        // once by cache and once by the browser for fetch, we need
-        // to clone the response.
-        let fetchRequest = event.request.clone();
-
-        return fetch(fetchRequest).then(
-          function(response) {
-            // Check if we received a valid response
-            if (!response || response.status !== 200 || response.type !== 'basic') {
-              return response;
-            }
-
-            // IMPORTANT: Clone the response. A response is a stream
-            // and because we want the browser to consume the response
-            // as well as the cache consuming the response, we need
-            // to clone it so we have two streams.
-            let responseToCache = response.clone();
-
-            caches.open(cacheName)
-              .then(function(cache) {
-                cache.put(event.request, responseToCache);
-              });
-
-            return response;
-          }
-        );
-      })
-    );
+// FETCH EVENT
+self.addEventListener('fetch', function (event) {
+	console.log('fetch', event.request.url);
+	event.respondWith(serveCacheFile(event.request));
 });
 
+function serveCacheFile(request) {
+	const url = request.url;
 
-/* remove the old one */
-self.addEventListener('activate', function(event) {
-  let cacheWhitelist = [cacheName];
+	if (shouldFileBeCached(url)) {
 
-  event.waitUntil(
-    caches.keys().then(function(keyList) {
-      return Promise.all(keyList.map(function(key) {
-        if (cacheWhitelist.indexOf(key) === -1) {
-          return caches.delete(key);
-        }
-      }));
-    })
-  );
-});
+		// Serve Cached Files
+		return caches.open(CACHE_NAME).then(cache => {
+			return cache.match(url).then(response => {
+				return response ? response : fetch(request.clone()).then(response => {
+					cache.put(url, response.clone());
+					return response;
+				});
+			});
+		});
+
+	} else {
+
+		return fetch(request).then(response => {
+			return response;
+		});
+    }
+}
+function shouldFileBeCached(url) {
+	const matchesWithUrlsToCache = urlsToCache.filter(urlToCache => url.indexOf(urlToCache) > -1);
+	return matchesWithUrlsToCache.length > 0;
+}
+function cleanCache(cacheName) {
+	return caches.delete(cacheName);
+}

@@ -35,9 +35,7 @@ class DBHelper {
    */
 
   static openDatabase() {
-    // if (!navigator.serviceWorker){
-    //  return Promise.resolve();
-    // }
+
 
     return idb.open('restaurantDb', 1, function (upgradeDb) {
       upgradeDb.createObjectStore('restaurantDb', {
@@ -87,33 +85,7 @@ class DBHelper {
    */
 
   static fetchRestaurants(callback) {
-    /** stage1
-    *let xhr = new XMLHttpRequest();
-    *xhr.open('GET', DBHelper.DATABASE_URL);
-    *xhr.onload = () => {
-    *  if (xhr.status === 200) { // Got a success response from server!
-    *    const json = JSON.parse(xhr.responseText);
-    *    const restaurants = json.restaurants;
-    *    callback(null, restaurants);
-    *  } else { // Oops!. Got an error from server.
-    *    const error = (`Request failed. Returned status of ${xhr.status}`);
-    *    callback(error, null);
-    *  }
-    *};
-    *xhr.send();
-    **/
 
-    /** Testing fetch from dummy server
-     *fetch(DBHelper.DATABASE_URL)
-     *  .then(respond => {
-     *    if (!respond.ok){
-     *      throw "Unable to fetch from server!";
-     *    }
-     *    return respond.json();
-     *  })
-     *  .then(restaurants => callback(null, restaurants))
-     *  .catch(e => callback(e,null))
-     **/
 
     return DBHelper.getCachedDb().then(restaurants => {
       if (restaurants.length) {
@@ -258,9 +230,8 @@ class DBHelper {
    * Restaurant image URL.
    */
 
-  static imageUrlForRestaurant(restaurant) {
-    // return (`/img/${restaurant.photograph}`
-    return `/dist/img/${restaurant.photograph}.jpg`;
+  static imageUrlForRestaurant(restaurant, size) {
+    return (`dist/img/${restaurant.photograph}-${size}.jpg`);
   }
 
   /**

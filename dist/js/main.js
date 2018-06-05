@@ -1,5 +1,4 @@
-/* eslint max-len: ["error", { "code": 100 }]*/
-/* eslint no-unused-vars: ["error", { "vars": "local" }]*/
+
 
 let restaurants;
 let neighborhoods;
@@ -10,10 +9,12 @@ var markers = [];
 /**
  * Fetch neighborhoods and cuisines as soon as the page is loaded.
  */
-document.addEventListener('DOMContentLoaded', () => {
-  fetchNeighborhoods();
-  fetchCuisines();
-});
+document.addEventListener('DOMContentLoaded', (event) => {
+    fetchNeighborhoods();
+    fetchCuisines();
+    registerServiceWorker();
+  });
+
 
 /**
  * Fetch all neighborhoods and set their HTML.
@@ -165,8 +166,11 @@ createRestaurantHTML = restaurant => {
 
   const image = document.createElement('img');
   image.className = 'restaurant-img';
+  const imgUrlArray = [DBHelper.imageUrlForRestaurant(restaurant, 'small'), DBHelper.imageUrlForRestaurant(restaurant, 'medium'), DBHelper.imageUrlForRestaurant(restaurant, 'large')];
+  //image.src = `${imgUrlArray[1]}`;
+  image.srcset = `${imgUrlArray[0]} 620w, ${imgUrlArray[1]} 800w, ${imgUrlArray[2]} 1440w`;
   image.setAttribute('role', 'img');
-  image.src = DBHelper.imageUrlForRestaurant(restaurant);
+  //image.src = DBHelper.imageUrlForRestaurant(restaurant);
 
   const name = document.createElement('h2');
   name.innerHTML = restaurant.name;
@@ -209,3 +213,16 @@ addMarkersToMap = (restaurants = self.restaurants) => {
     self.markers.push(marker);
   });
 };
+registerServiceWorker = () => {
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('sw.js').then(function(registration) {
+        // Registration was successful
+        console.log('ServiceWorker registration successful with scope: ', registration.scope);
+      }, function(err) {
+        // registration failed
+        console.log('ServiceWorker registration failed: ', err);
+      });
+    }
+  }
+
+
